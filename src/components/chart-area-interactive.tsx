@@ -1,7 +1,3 @@
-# Claude
-
-This file is a placeholder for Claude-related documentation or notes. Add any relevant information about Claude usage, integration, or configuration here.
-code:
 "use client"
 
 import * as React from "react"
@@ -15,13 +11,22 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import {
-  ChartConfig,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+
+type ChartConfig = {
+  [k in string]: {
+    label?: React.ReactNode
+    icon?: React.ComponentType
+  } & (
+    | { color?: string; theme?: never }
+    | { color?: never; theme: Record<string, string> }
+  )
+}
 import {
   Select,
   SelectContent,
@@ -268,5 +273,3 @@ export function ChartAreaInteractive() {
     </Card>
   )
 }
-
-
