@@ -12,41 +12,34 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 
-interface DashboardChartContainerProps {
+interface TabbedContainerProps {
   children?: React.ReactNode
   defaultValue?: string
-  messagesContent?: React.ReactNode
-  ticketsContent?: React.ReactNode
-  contactsContent?: React.ReactNode
+  tabs: { value: string; label: string; content?: React.ReactNode }[]
 }
 
-export function DashboardChartContainer({ 
-  defaultValue = "messages",
-  messagesContent,
-  ticketsContent,
-  contactsContent
-}: DashboardChartContainerProps) {
+export function TabbedContainer({ 
+  children,
+  defaultValue,
+  tabs
+}: TabbedContainerProps) {
   return (
     <Card className="pt-0">
       <CardHeader className="space-y-0 pb-0">
-        <Tabs defaultValue={defaultValue} className="w-full">
+        <Tabs defaultValue={defaultValue || tabs[0]?.value} className="w-full">
           <TabsList className="mt-6 mb-1">
-            <TabsTrigger value="messages">Messages</TabsTrigger>
-            <TabsTrigger value="tickets">Tickets</TabsTrigger>
-            <TabsTrigger value="contacts">Contacts</TabsTrigger>
+            {tabs.map((tab) => (
+              <TabsTrigger key={tab.value} value={tab.value}>
+                {tab.label}
+              </TabsTrigger>
+            ))}
           </TabsList>
           
-          <TabsContent value="messages" className="mt-0">
-            {messagesContent}
-          </TabsContent>
-          
-          <TabsContent value="tickets" className="mt-0">
-            {ticketsContent}
-          </TabsContent>
-          
-          <TabsContent value="contacts" className="mt-0">
-            {contactsContent}
-          </TabsContent>
+          {tabs.map((tab) => (
+            <TabsContent key={tab.value} value={tab.value} className="mt-0">
+              {tab.content}
+            </TabsContent>
+          ))}
         </Tabs>
       </CardHeader>
     </Card>
