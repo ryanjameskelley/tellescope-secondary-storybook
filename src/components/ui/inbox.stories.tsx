@@ -167,24 +167,7 @@ export const Default: Story = {
       <SidebarProvider>
         <div className="flex bg-background">
           <div className={`transition-all duration-300 ease-in-out ${showSidebar ? 'w-[255px]' : 'w-0'} overflow-hidden flex-shrink-0`}>
-            <AppSidebar />
-          </div>
-          <MailBlock showSidebar={showSidebar} onToggleSidebar={() => setShowSidebar(!showSidebar)} />
-        </div>
-      </SidebarProvider>
-    );
-  },
-};
-
-export const Expanded: Story = {
-  render: () => {
-    const [showSidebar, setShowSidebar] = useState(true);
-    
-    return (
-      <SidebarProvider>
-        <div className="flex bg-background">
-          <div className={`transition-all duration-300 ease-in-out ${showSidebar ? 'w-[255px]' : 'w-0'} overflow-hidden flex-shrink-0`}>
-            <AppSidebar />
+            <AppSidebar activePage="inbox" />
           </div>
           <MailBlock showSidebar={showSidebar} onToggleSidebar={() => setShowSidebar(!showSidebar)} />
         </div>
