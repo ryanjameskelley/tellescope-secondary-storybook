@@ -1,10 +1,7 @@
 import {
-  Calculator,
-  Calendar,
-  CreditCard,
-  Settings,
-  Smile,
-  User,
+  LayoutList,
+  Table,
+  Columns3,
 } from "lucide-react"
 
 import {
@@ -20,40 +17,55 @@ import {
 
 export function CommandDemo() {
   return (
-    <Command className="rounded-lg border shadow-md md:min-w-[450px]">
-      <CommandInput placeholder="Type a command or search..." />
+    <Command className="rounded-lg border max-w-lg bg-popover">
+      <CommandInput placeholder="Type a command or search" className="h-12 p-3" />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
-        <CommandGroup heading="Suggestions">
-          <CommandItem>
-            <Calendar />
-            <span>Calendar</span>
+        <CommandGroup heading="Views" className="p-1">
+          <CommandItem className="rounded-sm p-3 bg-accent">
+            <LayoutList className="h-4 text-muted-foreground" />
+            <span className="text-accent-foreground">Queues</span>
           </CommandItem>
-          <CommandItem>
-            <Smile />
-            <span>Search Emoji</span>
+          <CommandItem className="rounded-sm p-3">
+            <Table className="w-4 h-4 text-muted-foreground" />
+            <span className="text-foreground">Tickets</span>
           </CommandItem>
-          <CommandItem disabled>
-            <Calculator />
-            <span>Calculator</span>
+          <CommandItem className="rounded-sm p-3">
+            <Columns3 className="w-4 h-4 text-muted-foreground" />
+            <span className="text-foreground">Board</span>
+          </CommandItem>
+          <CommandItem className="rounded-sm p-3">
+            <Table className="w-4 h-4 text-muted-foreground" />
+            <span className="text-foreground">Board</span>
+          </CommandItem>
+          <CommandItem className="rounded-sm p-3">
+            <Table className="w-4 h-4 text-muted-foreground" />
+            <span className="text-foreground">Board</span>
+          </CommandItem>
+          <CommandItem className="rounded-sm p-3">
+            <Table className="w-4 h-4 text-muted-foreground" />
+            <span className="text-foreground">Board</span>
+          </CommandItem>
+          <CommandItem className="rounded-sm p-3">
+            <Table className="w-4 h-4 text-muted-foreground" />
+            <span className="text-foreground">Board</span>
+          </CommandItem>
+          <CommandItem className="rounded-sm p-3">
+            <Table className="w-4 h-4 text-muted-foreground" />
+            <span className="text-foreground">Board</span>
           </CommandItem>
         </CommandGroup>
-        <CommandSeparator />
-        <CommandGroup heading="Settings">
-          <CommandItem>
-            <User />
-            <span>Profile</span>
-            <CommandShortcut>⌘P</CommandShortcut>
+        <CommandSeparator className="h-0 px-px" />
+        <CommandGroup heading="Add View" className="p-1">
+          <CommandItem className="rounded-sm p-3">
+            <Table className="w-4 h-4 text-muted-foreground" />
+            <span className="text-foreground">Table</span>
+            <CommandShortcut className="text-muted-foreground text-xs">⌘T</CommandShortcut>
           </CommandItem>
-          <CommandItem>
-            <CreditCard />
-            <span>Billing</span>
-            <CommandShortcut>⌘B</CommandShortcut>
-          </CommandItem>
-          <CommandItem>
-            <Settings />
-            <span>Settings</span>
-            <CommandShortcut>⌘S</CommandShortcut>
+          <CommandItem className="rounded-sm p-3">
+            <Columns3 className="w-4 h-4 text-muted-foreground" />
+            <span className="text-foreground">Board</span>
+            <CommandShortcut className="text-muted-foreground text-xs">⌘B</CommandShortcut>
           </CommandItem>
         </CommandGroup>
       </CommandList>
