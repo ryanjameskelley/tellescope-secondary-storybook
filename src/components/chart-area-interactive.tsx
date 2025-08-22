@@ -38,115 +38,132 @@ import {
 export const description = "An interactive area chart"
 
 const chartData = [
-  { date: "2024-04-01", desktop: 222, mobile: 150 },
-  { date: "2024-04-02", desktop: 97, mobile: 180 },
-  { date: "2024-04-03", desktop: 167, mobile: 120 },
-  { date: "2024-04-04", desktop: 242, mobile: 260 },
-  { date: "2024-04-05", desktop: 373, mobile: 290 },
-  { date: "2024-04-06", desktop: 301, mobile: 340 },
-  { date: "2024-04-07", desktop: 245, mobile: 180 },
-  { date: "2024-04-08", desktop: 409, mobile: 320 },
-  { date: "2024-04-09", desktop: 59, mobile: 110 },
-  { date: "2024-04-10", desktop: 261, mobile: 190 },
-  { date: "2024-04-11", desktop: 327, mobile: 350 },
-  { date: "2024-04-12", desktop: 292, mobile: 210 },
-  { date: "2024-04-13", desktop: 342, mobile: 380 },
-  { date: "2024-04-14", desktop: 137, mobile: 220 },
-  { date: "2024-04-15", desktop: 120, mobile: 170 },
-  { date: "2024-04-16", desktop: 138, mobile: 190 },
-  { date: "2024-04-17", desktop: 446, mobile: 360 },
-  { date: "2024-04-18", desktop: 364, mobile: 410 },
-  { date: "2024-04-19", desktop: 243, mobile: 180 },
-  { date: "2024-04-20", desktop: 89, mobile: 150 },
-  { date: "2024-04-21", desktop: 137, mobile: 200 },
-  { date: "2024-04-22", desktop: 224, mobile: 170 },
-  { date: "2024-04-23", desktop: 138, mobile: 230 },
-  { date: "2024-04-24", desktop: 387, mobile: 290 },
-  { date: "2024-04-25", desktop: 215, mobile: 250 },
-  { date: "2024-04-26", desktop: 75, mobile: 130 },
-  { date: "2024-04-27", desktop: 383, mobile: 420 },
-  { date: "2024-04-28", desktop: 122, mobile: 180 },
-  { date: "2024-04-29", desktop: 315, mobile: 240 },
-  { date: "2024-04-30", desktop: 454, mobile: 380 },
-  { date: "2024-05-01", desktop: 165, mobile: 220 },
-  { date: "2024-05-02", desktop: 293, mobile: 310 },
-  { date: "2024-05-03", desktop: 247, mobile: 190 },
-  { date: "2024-05-04", desktop: 385, mobile: 420 },
-  { date: "2024-05-05", desktop: 481, mobile: 390 },
-  { date: "2024-05-06", desktop: 498, mobile: 520 },
-  { date: "2024-05-07", desktop: 388, mobile: 300 },
-  { date: "2024-05-08", desktop: 149, mobile: 210 },
-  { date: "2024-05-09", desktop: 227, mobile: 180 },
-  { date: "2024-05-10", desktop: 293, mobile: 330 },
-  { date: "2024-05-11", desktop: 335, mobile: 270 },
-  { date: "2024-05-12", desktop: 197, mobile: 240 },
-  { date: "2024-05-13", desktop: 197, mobile: 160 },
-  { date: "2024-05-14", desktop: 448, mobile: 490 },
-  { date: "2024-05-15", desktop: 473, mobile: 380 },
-  { date: "2024-05-16", desktop: 338, mobile: 400 },
-  { date: "2024-05-17", desktop: 499, mobile: 420 },
-  { date: "2024-05-18", desktop: 315, mobile: 350 },
-  { date: "2024-05-19", desktop: 235, mobile: 180 },
-  { date: "2024-05-20", desktop: 177, mobile: 230 },
-  { date: "2024-05-21", desktop: 82, mobile: 140 },
-  { date: "2024-05-22", desktop: 81, mobile: 120 },
-  { date: "2024-05-23", desktop: 252, mobile: 290 },
-  { date: "2024-05-24", desktop: 294, mobile: 220 },
-  { date: "2024-05-25", desktop: 201, mobile: 250 },
-  { date: "2024-05-26", desktop: 213, mobile: 170 },
-  { date: "2024-05-27", desktop: 420, mobile: 460 },
-  { date: "2024-05-28", desktop: 233, mobile: 190 },
-  { date: "2024-05-29", desktop: 78, mobile: 130 },
-  { date: "2024-05-30", desktop: 340, mobile: 280 },
-  { date: "2024-05-31", desktop: 178, mobile: 230 },
-  { date: "2024-06-01", desktop: 178, mobile: 200 },
-  { date: "2024-06-02", desktop: 470, mobile: 410 },
-  { date: "2024-06-03", desktop: 103, mobile: 160 },
-  { date: "2024-06-04", desktop: 439, mobile: 380 },
-  { date: "2024-06-05", desktop: 88, mobile: 140 },
-  { date: "2024-06-06", desktop: 294, mobile: 250 },
-  { date: "2024-06-07", desktop: 323, mobile: 370 },
-  { date: "2024-06-08", desktop: 385, mobile: 320 },
-  { date: "2024-06-09", desktop: 438, mobile: 480 },
-  { date: "2024-06-10", desktop: 155, mobile: 200 },
-  { date: "2024-06-11", desktop: 92, mobile: 150 },
-  { date: "2024-06-12", desktop: 492, mobile: 420 },
-  { date: "2024-06-13", desktop: 81, mobile: 130 },
-  { date: "2024-06-14", desktop: 426, mobile: 380 },
-  { date: "2024-06-15", desktop: 307, mobile: 350 },
-  { date: "2024-06-16", desktop: 371, mobile: 310 },
-  { date: "2024-06-17", desktop: 475, mobile: 520 },
-  { date: "2024-06-18", desktop: 107, mobile: 170 },
-  { date: "2024-06-19", desktop: 341, mobile: 290 },
-  { date: "2024-06-20", desktop: 408, mobile: 450 },
-  { date: "2024-06-21", desktop: 169, mobile: 210 },
-  { date: "2024-06-22", desktop: 317, mobile: 270 },
-  { date: "2024-06-23", desktop: 480, mobile: 530 },
-  { date: "2024-06-24", desktop: 132, mobile: 180 },
-  { date: "2024-06-25", desktop: 141, mobile: 190 },
-  { date: "2024-06-26", desktop: 434, mobile: 380 },
-  { date: "2024-06-27", desktop: 448, mobile: 490 },
-  { date: "2024-06-28", desktop: 149, mobile: 200 },
-  { date: "2024-06-29", desktop: 103, mobile: 160 },
-  { date: "2024-06-30", desktop: 446, mobile: 400 },
+  { date: "2024-04-01", email: 222, chat: 150, sms: 89 },
+  { date: "2024-04-02", email: 97, chat: 180, sms: 75 },
+  { date: "2024-04-03", email: 167, chat: 120, sms: 45 },
+  { date: "2024-04-04", email: 242, chat: 260, sms: 120 },
+  { date: "2024-04-05", email: 373, chat: 290, sms: 135 },
+  { date: "2024-04-06", email: 301, chat: 340, sms: 180 },
+  { date: "2024-04-07", email: 245, chat: 180, sms: 95 },
+  { date: "2024-04-08", email: 409, chat: 320, sms: 165 },
+  { date: "2024-04-09", email: 59, chat: 110, sms: 35 },
+  { date: "2024-04-10", email: 261, chat: 190, sms: 85 },
+  { date: "2024-04-11", email: 327, chat: 350, sms: 175 },
+  { date: "2024-04-12", email: 292, chat: 210, sms: 110 },
+  { date: "2024-04-13", email: 342, chat: 380, sms: 190 },
+  { date: "2024-04-14", email: 137, chat: 220, sms: 65 },
+  { date: "2024-04-15", email: 120, chat: 170, sms: 55 },
+  { date: "2024-04-16", email: 138, chat: 190, sms: 70 },
+  { date: "2024-04-17", email: 446, chat: 360, sms: 200 },
+  { date: "2024-04-18", email: 364, chat: 410, sms: 185 },
+  { date: "2024-04-19", email: 243, chat: 180, sms: 95 },
+  { date: "2024-04-20", email: 89, chat: 150, sms: 45 },
+  { date: "2024-04-21", email: 137, chat: 200, sms: 80 },
+  { date: "2024-04-22", email: 224, chat: 170, sms: 90 },
+  { date: "2024-04-23", email: 138, chat: 230, sms: 75 },
+  { date: "2024-04-24", email: 387, chat: 290, sms: 155 },
+  { date: "2024-04-25", email: 215, chat: 250, sms: 125 },
+  { date: "2024-04-26", email: 75, chat: 130, sms: 40 },
+  { date: "2024-04-27", email: 383, chat: 420, sms: 210 },
+  { date: "2024-04-28", email: 122, chat: 180, sms: 60 },
+  { date: "2024-04-29", email: 315, chat: 240, sms: 130 },
+  { date: "2024-04-30", email: 454, chat: 380, sms: 195 },
+  { date: "2024-05-01", email: 165, chat: 220, sms: 85 },
+  { date: "2024-05-02", email: 293, chat: 310, sms: 145 },
+  { date: "2024-05-03", email: 247, chat: 190, sms: 105 },
+  { date: "2024-05-04", email: 385, chat: 420, sms: 180 },
+  { date: "2024-05-05", email: 481, chat: 390, sms: 205 },
+  { date: "2024-05-06", email: 498, chat: 520, sms: 260 },
+  { date: "2024-05-07", email: 388, chat: 300, sms: 155 },
+  { date: "2024-05-08", email: 149, chat: 210, sms: 75 },
+  { date: "2024-05-09", email: 227, chat: 180, sms: 95 },
+  { date: "2024-05-10", email: 293, chat: 330, sms: 140 },
+  { date: "2024-05-11", email: 335, chat: 270, sms: 135 },
+  { date: "2024-05-12", email: 197, chat: 240, sms: 100 },
+  { date: "2024-05-13", email: 197, chat: 160, sms: 80 },
+  { date: "2024-05-14", email: 448, chat: 490, sms: 245 },
+  { date: "2024-05-15", email: 473, chat: 380, sms: 190 },
+  { date: "2024-05-16", email: 338, chat: 400, sms: 170 },
+  { date: "2024-05-17", email: 499, chat: 420, sms: 210 },
+  { date: "2024-05-18", email: 315, chat: 350, sms: 175 },
+  { date: "2024-05-19", email: 235, chat: 180, sms: 90 },
+  { date: "2024-05-20", email: 177, chat: 230, sms: 115 },
+  { date: "2024-05-21", email: 82, chat: 140, sms: 40 },
+  { date: "2024-05-22", email: 81, chat: 120, sms: 35 },
+  { date: "2024-05-23", email: 252, chat: 290, sms: 145 },
+  { date: "2024-05-24", email: 294, chat: 220, sms: 110 },
+  { date: "2024-05-25", email: 201, chat: 250, sms: 125 },
+  { date: "2024-05-26", email: 213, chat: 170, sms: 85 },
+  { date: "2024-05-27", email: 420, chat: 460, sms: 230 },
+  { date: "2024-05-28", email: 233, chat: 190, sms: 95 },
+  { date: "2024-05-29", email: 78, chat: 130, sms: 40 },
+  { date: "2024-05-30", email: 340, chat: 280, sms: 140 },
+  { date: "2024-05-31", email: 178, chat: 230, sms: 115 },
+  { date: "2024-06-01", email: 178, chat: 200, sms: 100 },
+  { date: "2024-06-02", email: 470, chat: 410, sms: 205 },
+  { date: "2024-06-03", email: 103, chat: 160, sms: 50 },
+  { date: "2024-06-04", email: 439, chat: 380, sms: 190 },
+  { date: "2024-06-05", email: 88, chat: 140, sms: 45 },
+  { date: "2024-06-06", email: 294, chat: 250, sms: 125 },
+  { date: "2024-06-07", email: 323, chat: 370, sms: 185 },
+  { date: "2024-06-08", email: 385, chat: 320, sms: 160 },
+  { date: "2024-06-09", email: 438, chat: 480, sms: 240 },
+  { date: "2024-06-10", email: 155, chat: 200, sms: 100 },
+  { date: "2024-06-11", email: 92, chat: 150, sms: 50 },
+  { date: "2024-06-12", email: 492, chat: 420, sms: 210 },
+  { date: "2024-06-13", email: 81, chat: 130, sms: 40 },
+  { date: "2024-06-14", email: 426, chat: 380, sms: 190 },
+  { date: "2024-06-15", email: 307, chat: 350, sms: 175 },
+  { date: "2024-06-16", email: 371, chat: 310, sms: 155 },
+  { date: "2024-06-17", email: 475, chat: 520, sms: 260 },
+  { date: "2024-06-18", email: 107, chat: 170, sms: 55 },
+  { date: "2024-06-19", email: 341, chat: 290, sms: 145 },
+  { date: "2024-06-20", email: 408, chat: 450, sms: 225 },
+  { date: "2024-06-21", email: 169, chat: 210, sms: 85 },
+  { date: "2024-06-22", email: 317, chat: 270, sms: 135 },
+  { date: "2024-06-23", email: 480, chat: 530, sms: 265 },
+  { date: "2024-06-24", email: 132, chat: 180, sms: 65 },
+  { date: "2024-06-25", email: 141, chat: 190, sms: 70 },
+  { date: "2024-06-26", email: 434, chat: 380, sms: 190 },
+  { date: "2024-06-27", email: 448, chat: 490, sms: 245 },
+  { date: "2024-06-28", email: 149, chat: 200, sms: 75 },
+  { date: "2024-06-29", email: 103, chat: 160, sms: 50 },
+  { date: "2024-06-30", email: 446, chat: 400, sms: 200 },
 ]
 
 const chartConfig = {
   visitors: {
     label: "Visitors",
   },
-  desktop: {
-    label: "Desktop",
-    color: "var(--chart-1)",
+  email: {
+    label: "Email",
+    color: "#655560",
   },
-  mobile: {
-    label: "Mobile",
-    color: "var(--chart-2)",
+  chat: {
+    label: "Chat",
+    color: "#1564BF",
+  },
+  sms: {
+    label: "SMS",
+    color: "#405F90",
   },
 } satisfies ChartConfig
 
 export function ChartAreaInteractive() {
   const [timeRange, setTimeRange] = React.useState("90d")
+  
+  const getTimeRangeLabel = (range: string) => {
+    switch (range) {
+      case "7d":
+        return "7 days"
+      case "30d":
+        return "30 days"
+      case "90d":
+        return "3 months"
+      default:
+        return "3 months"
+    }
+  }
 
   const filteredData = chartData.filter((item) => {
     const date = new Date(item.date)
@@ -163,12 +180,12 @@ export function ChartAreaInteractive() {
   })
 
   return (
-    <Card className="pt-0">
-      <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
+    <>
+      <div className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
         <div className="grid flex-1 gap-1">
-          <CardTitle>Area Chart - Interactive</CardTitle>
+          <CardTitle>Messaging activity</CardTitle>
           <CardDescription>
-            Showing total visitors for the last 3 months
+            during the last {getTimeRangeLabel(timeRange)}
           </CardDescription>
         </div>
         <Select value={timeRange} onValueChange={setTimeRange}>
@@ -190,7 +207,7 @@ export function ChartAreaInteractive() {
             </SelectItem>
           </SelectContent>
         </Select>
-      </CardHeader>
+      </div>
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
         <ChartContainer
           config={chartConfig}
@@ -198,27 +215,39 @@ export function ChartAreaInteractive() {
         >
           <AreaChart data={filteredData}>
             <defs>
-              <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id="fillEmail" x1="0" y1="0" x2="0" y2="1">
                 <stop
                   offset="5%"
-                  stopColor="var(--color-desktop)"
+                  stopColor="var(--color-email)"
                   stopOpacity={0.8}
                 />
                 <stop
                   offset="95%"
-                  stopColor="var(--color-desktop)"
+                  stopColor="var(--color-email)"
                   stopOpacity={0.1}
                 />
               </linearGradient>
-              <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id="fillChat" x1="0" y1="0" x2="0" y2="1">
                 <stop
                   offset="5%"
-                  stopColor="var(--color-mobile)"
+                  stopColor="var(--color-chat)"
                   stopOpacity={0.8}
                 />
                 <stop
                   offset="95%"
-                  stopColor="var(--color-mobile)"
+                  stopColor="var(--color-chat)"
+                  stopOpacity={0.1}
+                />
+              </linearGradient>
+              <linearGradient id="fillSms" x1="0" y1="0" x2="0" y2="1">
+                <stop
+                  offset="5%"
+                  stopColor="var(--color-sms)"
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="var(--color-sms)"
                   stopOpacity={0.1}
                 />
               </linearGradient>
@@ -253,23 +282,30 @@ export function ChartAreaInteractive() {
               }
             />
             <Area
-              dataKey="mobile"
+              dataKey="sms"
               type="natural"
-              fill="url(#fillMobile)"
-              stroke="var(--color-mobile)"
+              fill="url(#fillSms)"
+              stroke="var(--color-sms)"
               stackId="a"
             />
             <Area
-              dataKey="desktop"
+              dataKey="chat"
               type="natural"
-              fill="url(#fillDesktop)"
-              stroke="var(--color-desktop)"
+              fill="url(#fillChat)"
+              stroke="var(--color-chat)"
+              stackId="a"
+            />
+            <Area
+              dataKey="email"
+              type="natural"
+              fill="url(#fillEmail)"
+              stroke="var(--color-email)"
               stackId="a"
             />
             <ChartLegend content={<ChartLegendContent />} />
           </AreaChart>
         </ChartContainer>
       </CardContent>
-    </Card>
+    </>
   )
 }

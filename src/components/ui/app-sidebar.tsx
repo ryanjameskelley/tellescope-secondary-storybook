@@ -15,10 +15,10 @@ import {
   MoreHorizontal 
 } from "lucide-react";
 
-export function AppSidebar() {
+export function AppSidebar({ activePage }: { activePage?: string } = {}) {
   const [isMessagingExpanded, setIsMessagingExpanded] = useState(true);
   return (
-    <div className="border-r h-full bg-sidebar text-sidebar-foreground w-full">
+    <div className="border-r h-full bg-sidebar text-sidebar-foreground w-[254px]">
       <div className="px-2 py-2 border-b h-[52px] flex items-center">
         <div className="flex items-center gap-2 p-2 rounded-md">
           <div className="flex items-start">
@@ -38,7 +38,7 @@ export function AppSidebar() {
 
       <div className="pt-2 px-2">
         <div className="space-y-1">
-          <Button variant="ghost" className="w-full justify-start h-8 px-2 py-2 rounded-md">
+          <Button variant="ghost" className={`w-full justify-start h-8 px-2 py-2 rounded-md ${activePage === 'dashboard' ? 'bg-sidebar-accent text-sidebar-accent-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground' : ''}`}>
             <LayoutDashboard className="h-4 w-4 mr-2 text-sidebar-foreground" />
             <span className="text-sm text-sidebar-foreground">Dashboard</span>
           </Button>
@@ -69,7 +69,7 @@ export function AppSidebar() {
         <>
           <div className="px-2 py-2">
             <div className="space-y-1">
-              <Button className="w-full justify-start h-9 px-3 py-2 rounded-md bg-sidebar-accent text-sidebar-accent-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
+              <Button variant="ghost" className={`w-full justify-start h-9 px-3 py-2 rounded-md ${activePage === 'inbox' ? 'bg-sidebar-accent text-sidebar-accent-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground' : ''}`}>
                 <span className="text-sm font-medium">Inbox</span>
                 <span className="ml-auto text-sm font-medium">128</span>
               </Button>
