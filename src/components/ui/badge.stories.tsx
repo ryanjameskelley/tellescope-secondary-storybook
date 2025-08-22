@@ -4,17 +4,12 @@ import { Badge } from "./badge";
 const meta: Meta<typeof Badge> = {
   title: "Atoms/Badge",
   component: Badge,
+  tags: ["autodocs"],
   argTypes: {
     variant: {
-      control: "select",
+      control: { type: "select" },
       options: ["default", "secondary", "destructive", "outline"],
     },
-    children: { control: "text" },
-    className: { control: "text" },
-  },
-  args: {
-    children: "Badge",
-    variant: "default",
   },
 };
 export default meta;
@@ -22,26 +17,28 @@ type Story = StoryObj<typeof Badge>;
 
 export const Default: Story = {
   args: {
+    children: "Badge",
     variant: "default",
-    children: "Default Badge",
-  },
-};
-export const Secondary: Story = {
-  args: {
-    variant: "secondary",
-    children: "Secondary Badge",
-  },
-};
-export const Destructive: Story = {
-  args: {
-    variant: "destructive",
-    children: "Destructive Badge",
-  },
-};
-export const Outline: Story = {
-  args: {
-    variant: "outline",
-    children: "Outline Badge",
   },
 };
 
+export const Secondary: Story = {
+  args: {
+    children: "Secondary",
+    variant: "secondary",
+  },
+};
+
+export const Destructive: Story = {
+  args: {
+    children: "Destructive",
+    variant: "destructive",
+  },
+};
+
+export const Outline: Story = {
+  args: {
+    children: "Outline",
+    variant: "outline",
+  },
+};

@@ -1,56 +1,44 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Checkbox } from "./checkbox";
-import { Label } from "./label";
 
 const meta: Meta<typeof Checkbox> = {
   title: "Atoms/Checkbox",
   component: Checkbox,
+  tags: ["autodocs"],
   argTypes: {
-    checked: { control: "boolean" },
-    disabled: { control: "boolean" },
-    className: { control: "text" },
-  },
-  args: {
-    checked: false,
-    disabled: false,
+    disabled: {
+      control: { type: "boolean" },
+    },
   },
 };
 export default meta;
 type Story = StoryObj<typeof Checkbox>;
 
 export const Default: Story = {
-  render: (args: React.ComponentProps<typeof Checkbox>) => (
-    <div className="flex items-center gap-2">
-      <Checkbox id="checkbox" {...args} />
-      <Label htmlFor="checkbox">Checkbox</Label>
+  args: {
+    id: "checkbox-default",
+  },
+  render: (args) => (
+    <div className="flex items-center space-x-2">
+      <Checkbox {...args} />
+      <label htmlFor={args.id} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+        Accept terms and conditions
+      </label>
     </div>
   ),
-  args: {
-    checked: false,
-    disabled: false,
-  },
 };
-export const Checked: Story = {
-  render: (args: React.ComponentProps<typeof Checkbox>) => (
-    <div className="flex items-center gap-2">
-      <Checkbox id="checkbox-checked" {...args} />
-      <Label htmlFor="checkbox-checked">Checked</Label>
-    </div>
-  ),
-  args: {
-    checked: true,
-    disabled: false,
-  },
-};
+
 export const Disabled: Story = {
-  render: (args: React.ComponentProps<typeof Checkbox>) => (
-    <div className="flex items-center gap-2">
-      <Checkbox id="checkbox-disabled" {...args} />
-      <Label htmlFor="checkbox-disabled">Disabled</Label>
+  args: {
+    disabled: true,
+    id: "checkbox-disabled",
+  },
+  render: (args) => (
+    <div className="flex items-center space-x-2">
+      <Checkbox {...args} />
+      <label htmlFor={args.id} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+        Accept terms and conditions
+      </label>
     </div>
   ),
-  args: {
-    checked: false,
-    disabled: true,
-  },
 };
