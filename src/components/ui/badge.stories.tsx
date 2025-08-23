@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Badge } from "./badge";
+import { DeletableBadge } from "./deletable-badge";
 
 const meta: Meta<typeof Badge> = {
   title: "Atoms/Badge",
@@ -41,4 +42,23 @@ export const Outline: Story = {
     children: "Outline",
     variant: "outline",
   },
+};
+
+export const Deletable: Story = {
+  render: () => (
+    <div className="flex gap-2 flex-wrap">
+      <DeletableBadge variant="default" onDelete={() => console.log("Delete default")}>
+        Default
+      </DeletableBadge>
+      <DeletableBadge variant="secondary" onDelete={() => console.log("Delete secondary")}>
+        Secondary
+      </DeletableBadge>
+      <DeletableBadge variant="outline" onDelete={() => console.log("Delete outline")}>
+        Outline
+      </DeletableBadge>
+      <DeletableBadge variant="destructive" onDelete={() => console.log("Delete destructive")}>
+        Destructive
+      </DeletableBadge>
+    </div>
+  ),
 };

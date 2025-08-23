@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ChevronDown, CirclePlus, GripVertical, CheckCheck, Pencil, AlarmClockMinus, Trash, CircleX, Plus, Check, X } from "lucide-react"
+import { ChevronDown, CirclePlus, GripVertical, CheckCheck, Pencil, AlarmClockMinus, Trash, CircleX, Plus, Check, X, Circle } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 import {
@@ -13,6 +13,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
+import { DeletableBadge } from "@/components/ui/deletable-badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -22,6 +23,18 @@ import {
   DropdownMenuTrigger,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu"
+import {
+  Command,
+  CommandGroup,
+  CommandItem,
+} from "@/components/ui/command"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 
 type Ticket = {
   id: string
@@ -112,18 +125,73 @@ const availableStatusOptions = [
 
 interface TagListProps {
   items: string[]
+  variant?: "default" | "secondary" | "destructive" | "outline" | "chart-primary" | "chart-secondary" | "chart-tertiary" | "chart-accent"
   onRemoveTag?: (tag: string) => void
   onAddTag?: (tag: string) => void
   availableOptions?: string[]
+  columnKey?: string
+  allowColorSelection?: boolean
+  globalTagColors?: Record<string, TagColor>
+  onSetGlobalTagColor?: (tag: string, color: TagColor) => void
+}
+
+type TagColor = {
+  name: string
+  variant: "default" | "secondary" | "destructive" | "outline"
+  bgColor: string
+  textColor: string
+}
+
+const availableTagColors: TagColor[] = [
+  { name: "Default", variant: "default", bgColor: "bg-slate-900", textColor: "text-white" },
+  { name: "Secondary", variant: "secondary", bgColor: "bg-slate-100", textColor: "text-slate-900" },
+  { name: "Success", variant: "outline", bgColor: "bg-green-500", textColor: "text-white" },
+  { name: "Warning", variant: "outline", bgColor: "bg-yellow-500", textColor: "text-black" },
+  { name: "Info", variant: "outline", bgColor: "bg-blue-500", textColor: "text-white" },
+  { name: "Destructive", variant: "destructive", bgColor: "bg-red-500", textColor: "text-white" },
+]
+
+const getColorValue = (tailwindClass: string): string => {
+  const colorMap: Record<string, string> = {
+    'bg-slate-900': '#0f172a',
+    'bg-slate-100': '#f1f5f9',
+    'bg-green-500': '#22c55e',
+    'bg-yellow-500': '#eab308',
+    'bg-blue-500': '#3b82f6',
+    'bg-red-500': '#ef4444',
+  }
+  return colorMap[tailwindClass] || '#6b7280'
+}
+
+const getTagStyles = (variant: TagListProps['variant']) => {
+  switch (variant) {
+    case "chart-primary":
+      return "bg-[#655560] text-white border-[#655560] hover:bg-[#655560]/90"
+    case "chart-secondary": 
+      return "bg-[#1564BF] text-white border-[#1564BF] hover:bg-[#1564BF]/90"
+    case "chart-tertiary":
+      return "bg-[#405F90] text-white border-[#405F90] hover:bg-[#405F90]/90"
+    case "chart-accent":
+      return "bg-[#655560] text-white border-[#655560] hover:bg-[#655560]/90"
+    default:
+      return ""
+  }
 }
 
 function TagList({ 
   items, 
+  variant = "secondary", 
   onRemoveTag, 
   onAddTag, 
-  availableOptions = []
+  availableOptions = [],
+  columnKey,
+  allowColorSelection = false,
+  globalTagColors = {},
+  onSetGlobalTagColor
 }: TagListProps) {
   const [isSelectOpen, setIsSelectOpen] = React.useState(false)
+  const [isColorDialogOpen, setIsColorDialogOpen] = React.useState(false)
+  const [selectedTagForColor, setSelectedTagForColor] = React.useState<string>("")
   const containerRef = React.useRef<HTMLDivElement>(null)
   
   const handleToggleTag = (tag: string, event: React.MouseEvent) => {
@@ -142,6 +210,22 @@ function TagList({
     }
   }
 
+  const handleColorClick = (tag: string, event: React.MouseEvent) => {
+    event.preventDefault()
+    event.stopPropagation()
+    setSelectedTagForColor(tag)
+    setIsColorDialogOpen(true)
+    setIsSelectOpen(false)
+  }
+
+  const handleColorSelection = (color: TagColor) => {
+    if (selectedTagForColor && onSetGlobalTagColor) {
+      onSetGlobalTagColor(selectedTagForColor, color)
+    }
+    setIsColorDialogOpen(false)
+    setSelectedTagForColor("")
+  }
+
   return (
     <div className="flex gap-1 items-center">
       {onAddTag && (
@@ -155,22 +239,64 @@ function TagList({
               <Plus className="h-2.5 w-2.5" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="min-w-max">
-            {availableOptions.map((option) => (
-              <DropdownMenuItem
-                key={option}
-                onSelect={(event) => event.preventDefault()}
-                onClick={(event) => handleToggleTag(option, event)}
-                className="flex items-center justify-between cursor-pointer px-2"
-              >
-                <span className="flex-1">{option}</span>
-                <div className="w-4 h-4 flex items-center justify-center ml-2">
-                  {items.includes(option) && (
-                    <Check className="h-4 w-4 text-primary" />
-                  )}
-                </div>
-              </DropdownMenuItem>
-            ))}
+          <DropdownMenuContent align="start" className="p-0 w-fit">
+            <Command className="rounded-md border-none shadow-none">
+              <CommandGroup className="p-1">
+                {availableOptions.map((option) => {
+                  const tagColor = globalTagColors[option]
+                  return (
+                    <CommandItem
+                      key={option}
+                      onSelect={(event) => event.preventDefault()}
+                      className="flex items-center gap-2 rounded-xs py-1.5 pl-2 pr-8"
+                    >
+                      <div
+                        className="cursor-pointer"
+                        onClick={(event) => {
+                          event.preventDefault()
+                          event.stopPropagation()
+                          if (allowColorSelection) {
+                            handleColorClick(option, event)
+                          }
+                        }}
+                      >
+                        <Circle 
+                          className="h-4 w-4"
+                          style={tagColor ? { 
+                            backgroundColor: getColorValue(tagColor.bgColor),
+                            color: getColorValue(tagColor.bgColor),
+                            border: `1px solid ${getColorValue(tagColor.bgColor)}`,
+                            borderRadius: '50%',
+                            fill: getColorValue(tagColor.bgColor),
+                            stroke: 'none'
+                          } : {
+                            backgroundColor: 'transparent',
+                            border: 'none',
+                            borderRadius: '50%',
+                            color: '#e5e7eb',
+                            fill: '#e5e7eb',
+                            stroke: 'none'
+                          }}
+                        />
+                      </div>
+                      <span 
+                        className="text-popover-foreground text-sm flex-1 cursor-pointer"
+                        onClick={(event) => {
+                          event.preventDefault()
+                          event.stopPropagation()
+                          handleToggleTag(option, event)
+                        }}
+                      >
+                        {option}
+                      </span>
+                      {items.includes(option) && (
+                        <Check className="ml-auto h-4 w-4 text-popover-foreground" />
+                      )}
+                    </CommandItem>
+                  )
+                })}
+              </CommandGroup>
+            </Command>
           </DropdownMenuContent>
         </DropdownMenu>
       )}
@@ -181,25 +307,47 @@ function TagList({
             display: none;
           }
         `}</style>
-        {items.map((item, index) => (
-          <Badge 
-            key={index} 
-            variant="outline" 
-            className="whitespace-nowrap flex-shrink-0 flex items-center gap-1 h-5 hover:bg-muted/50 transition-colors"
-          >
-            <span>{item}</span>
-            {onRemoveTag && (
-              <button
-                onClick={() => onRemoveTag(item)}
-                className="ml-1 hover:text-destructive transition-colors"
-                aria-label={`Remove ${item}`}
-              >
-                <X className="h-2.5 w-2.5" />
-              </button>
-            )}
-          </Badge>
-        ))}
+        {items.map((item, index) => {
+          const itemColor = globalTagColors[item]
+          const badgeVariant = itemColor ? itemColor.variant : 'secondary'
+          const customColorClass = itemColor ? `${itemColor.bgColor} ${itemColor.textColor} border-transparent` : 'bg-gray-200 text-gray-700 border-transparent'
+          return (
+            <DeletableBadge
+              key={index}
+              variant={badgeVariant}
+              className={`whitespace-nowrap flex-shrink-0 h-5 ${customColorClass}`}
+              onDelete={onRemoveTag ? () => onRemoveTag(item) : undefined}
+            >
+              {item}
+            </DeletableBadge>
+          )
+        })}
       </div>
+
+      {/* Color Selection Dialog */}
+      <Dialog open={isColorDialogOpen} onOpenChange={setIsColorDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Choose Color for "{selectedTagForColor}"</DialogTitle>
+            <DialogDescription>
+              Select a color for this tag
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid grid-cols-2 gap-3 py-4">
+            {availableTagColors.map((color) => (
+              <Button
+                key={color.name}
+                variant="ghost"
+                className="h-auto p-3 flex items-center gap-2 justify-start hover:bg-muted"
+                onClick={() => handleColorSelection(color)}
+              >
+                <div className={`w-4 h-4 rounded ${color.bgColor} flex-shrink-0`} />
+                <span>{color.name}</span>
+              </Button>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
@@ -210,6 +358,7 @@ export function TicketingTable() {
   const [draggedItem, setDraggedItem] = React.useState<string | null>(null)
   const [dragOverItem, setDragOverItem] = React.useState<string | null>(null)
   const [searchTerm, setSearchTerm] = React.useState("")
+  const [globalTagColors, setGlobalTagColors] = React.useState<Record<string, TagColor>>({})
 
   const filteredData = React.useMemo(() => {
     let result = [...ticketsData]
@@ -304,6 +453,13 @@ export function TicketingTable() {
           : ticket
       )
     )
+  }
+
+  const handleSetGlobalTagColor = (tag: string, color: TagColor) => {
+    setGlobalTagColors(prev => ({
+      ...prev,
+      [tag]: color
+    }))
   }
 
 
@@ -402,9 +558,14 @@ export function TicketingTable() {
                 <TableCell>
                   <TagList 
                     items={ticket.status}
+                    variant="chart-primary"
                     onRemoveTag={(tag) => removeStatusTag(ticket.id, tag)}
                     onAddTag={(tag) => addStatusTag(ticket.id, tag)}
                     availableOptions={availableStatusOptions}
+                    columnKey="status"
+                    allowColorSelection={true}
+                    globalTagColors={globalTagColors}
+                    onSetGlobalTagColor={handleSetGlobalTagColor}
                   />
                 </TableCell>
                 <TableCell>
