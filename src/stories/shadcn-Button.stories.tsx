@@ -1,5 +1,6 @@
 import { Button } from "../components/ui/button";
 import type { Meta, StoryObj } from "@storybook/react";
+import { PlusCircle, Container } from "lucide-react";
 
 const meta: Meta<typeof Button> = {
   title: "Atoms/Button",
@@ -15,13 +16,24 @@ const meta: Meta<typeof Button> = {
     },
     children: { control: "text" },
     disabled: { control: "boolean" },
+    iconLeft: { 
+      control: "boolean",
+      description: "Show icon to the left of button text"
+    },
   },
   args: {
     children: "Button",
     variant: "default",
     size: "default",
     disabled: false,
+    iconLeft: false,
   },
+  render: ({ iconLeft, children, ...args }) => (
+    <Button {...args} className={`${iconLeft ? 'flex items-center gap-2' : ''} ${args.className || ''}`}>
+      {iconLeft && <Container className="h-4 w-4" />}
+      {children}
+    </Button>
+  ),
 };
 export default meta;
 type Story = StoryObj<typeof Button>;
@@ -67,4 +79,21 @@ export const Disabled: Story = {
     disabled: true,
     children: "Disabled Button",
   },
+};
+
+export const Filter: Story = {
+  args: {
+    variant: "outline",
+    size: "sm",
+    className: "flex items-center gap-2 border-dashed",
+    style: { borderDashArray: '4px' },
+    children: "Filter",
+    iconLeft: true,
+  },
+  render: ({ iconLeft, children, ...args }) => (
+    <Button {...args}>
+      {iconLeft && <PlusCircle className="h-4 w-4" />}
+      {children}
+    </Button>
+  ),
 };
