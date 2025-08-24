@@ -13,7 +13,8 @@ import {
   useReactTable,
   type VisibilityState,
 } from "@tanstack/react-table"
-import { ChevronDown, CirclePlus, GripVertical, CheckCheck, Pencil, AlarmClockMinus, Trash, CircleX, Plus, Check, X, Circle, PanelRight, PlusCircle, ArrowUpDown, Settings2 } from "lucide-react"
+import { ChevronDown, CirclePlus, GripVertical, CheckCheck, Pencil, AlarmClockMinus, Trash, CircleX, Plus, Check, X, Circle, PanelRight, PlusCircle, Settings2 } from "lucide-react"
+import { SortableHeader, StaticHeader } from "@/components/atoms/table"
 import { toast } from "sonner"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
@@ -28,6 +29,13 @@ import { Badge } from "@/components/ui/badge"
 import { DeletableBadge } from "@/components/ui/deletable-badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -1448,59 +1456,41 @@ export function TicketingTable() {
   const tableColumns = React.useMemo<ColumnDef<Ticket>[]>(() => [
     {
       accessorKey: "title",
-      header: ({ column }) => {
-        return (
-          <div 
-            className="flex items-center cursor-pointer select-none font-medium hover:text-accent-foreground"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Title
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </div>
-        )
-      },
+      header: ({ column }) => (
+        <SortableHeader onSort={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          Title
+        </SortableHeader>
+      ),
     },
     {
       accessorKey: "id",
-      header: "ID",
+      header: () => <StaticHeader>ID</StaticHeader>,
     },
     {
       accessorKey: "opened",
-      header: ({ column }) => {
-        return (
-          <div 
-            className="flex items-center cursor-pointer select-none font-medium hover:text-accent-foreground"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Opened
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </div>
-        )
-      },
+      header: ({ column }) => (
+        <SortableHeader onSort={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          Opened
+        </SortableHeader>
+      ),
       accessorFn: (row) => row.opened.date,
     },
     {
       accessorKey: "origin",
-      header: ({ column }) => {
-        return (
-          <div 
-            className="flex items-center cursor-pointer select-none font-medium hover:text-accent-foreground"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Origin
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </div>
-        )
-      },
+      header: ({ column }) => (
+        <SortableHeader onSort={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          Origin
+        </SortableHeader>
+      ),
       accessorFn: (row) => row.opened.journey,
     },
     {
       accessorKey: "status",
-      header: "Status",
+      header: () => <StaticHeader>Status</StaticHeader>,
     },
     {
       accessorKey: "actions",
-      header: "Actions",
+      header: () => <StaticHeader>Actions</StaticHeader>,
     },
   ], [])
 
@@ -1839,8 +1829,8 @@ export function TicketingTable() {
 
 
   return (
-    <div className="space-y-4 w-full">
-      <div className="flex items-center justify-between">
+    <div className="w-full">
+      <div className="flex items-center justify-between py-4">
         <div className="flex items-center gap-2">
           <Input
             placeholder="Find tickets"
@@ -1887,12 +1877,11 @@ export function TicketingTable() {
           </Button>
         </div>
       </div>
-
       <div className="border rounded-lg overflow-hidden flex">
         {/* Fixed left columns - checkbox, drag handle, and title */}
         <div className="flex-shrink-0 border-r bg-white">
           <Table>
-            <TableHeader>
+            <TableHeader className="sticky top-0 z-20 bg-background">
               <TableRow className="hover:bg-transparent">
                 <TableHead className="w-10 text-center">
                   <Checkbox 
@@ -1903,14 +1892,10 @@ export function TicketingTable() {
                 </TableHead>
                 <TableHead className="w-10 text-center"></TableHead>
                 {visibleColumns.title && (
-                  <TableHead className="font-medium whitespace-nowrap max-w-[270px] w-[270px]">
-                    <div 
-                      className="flex items-center cursor-pointer select-none hover:text-accent-foreground"
-                      onClick={() => table.getColumn('title')?.toggleSorting(table.getColumn('title')?.getIsSorted() === 'asc')}
-                    >
+                  <TableHead className="whitespace-nowrap max-w-[270px] w-[270px]">
+                    <SortableHeader onSort={() => table.getColumn('title')?.toggleSorting(table.getColumn('title')?.getIsSorted() === 'asc')}>
                       Title
-                      <ArrowUpDown className="ml-2 h-4 w-4" />
-                    </div>
+                    </SortableHeader>
                   </TableHead>
                 )}
               </TableRow>
@@ -1979,24 +1964,20 @@ export function TicketingTable() {
         {visibleScrollableColumns.length > 0 && (
           <div className="flex-1 overflow-x-auto">
             <Table>
-              <TableHeader>
+              <TableHeader className="sticky top-0 z-20 bg-background">
                 <TableRow className="hover:bg-transparent">
                   {visibleScrollableColumns.map((column) => {
                     const renderSortableHeader = (label: string, columnKey: string) => (
-                      <div 
-                        className="flex items-center cursor-pointer select-none hover:text-accent-foreground"
-                        onClick={() => table.getColumn(columnKey)?.toggleSorting(table.getColumn(columnKey)?.getIsSorted() === 'asc')}
-                      >
+                      <SortableHeader onSort={() => table.getColumn(columnKey)?.toggleSorting(table.getColumn(columnKey)?.getIsSorted() === 'asc')}>
                         {label}
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
-                      </div>
+                      </SortableHeader>
                     )
                     
                     return (
-                      <TableHead key={column.key} className={`font-medium whitespace-nowrap ${column.width}`}>
+                      <TableHead key={column.key} className={`whitespace-nowrap ${column.width}`}>
                         {column.key === 'opened' ? renderSortableHeader('Opened', 'opened') :
                          column.key === 'origin' ? renderSortableHeader('Origin', 'origin') :
-                         column.label}
+                         <StaticHeader>{column.label}</StaticHeader>}
                       </TableHead>
                     )
                   })}
@@ -2075,30 +2056,48 @@ export function TicketingTable() {
             </Table>
           </div>
         )}
-      </div>
-
+        </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="text-muted-foreground flex-1 text-sm">
           Page {table.getState().pagination.pageIndex + 1} of{" "}
           {table.getPageCount()} ({table.getFilteredRowModel().rows.length} tickets)
         </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2">
+            <span className="text-sm text-muted-foreground">Rows per page</span>
+            <Select
+              value={table.getState().pagination.pageSize.toString()}
+              onValueChange={(value) => table.setPageSize(Number(value))}
+            >
+              <SelectTrigger className="w-16 h-8">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="10">10</SelectItem>
+                <SelectItem value="20">20</SelectItem>
+                <SelectItem value="50">50</SelectItem>
+                <SelectItem value="100">100</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              Previous
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              Next
+            </Button>
+          </div>
         </div>
       </div>
 

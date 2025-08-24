@@ -1,7 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { ChevronDown, X, Plus, Check, PanelRight, Palette, Circle, ArrowUpDown, Settings2 } from "lucide-react"
+import { ChevronDown, X, Plus, Check, PanelRight, Palette, Circle, Settings2 } from "lucide-react"
+import { SortableHeader, StaticHeader } from "@/components/atoms/table"
 import {
   type ColumnDef,
   type ColumnFiltersState,
@@ -38,6 +39,13 @@ import {
 } from "@/components/ui/command"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import {
   Sheet,
   SheetContent,
@@ -1139,33 +1147,27 @@ export function ContactsTable() {
   const columns = React.useMemo<ColumnDef<Contact>[]>(() => [
     {
       accessorKey: "name",
-      header: ({ column }) => {
-        return (
-          <div 
-            className="flex items-center cursor-pointer select-none font-medium hover:text-accent-foreground"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Name
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </div>
-        )
-      },
+      header: ({ column }) => (
+        <SortableHeader onSort={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+          Name
+        </SortableHeader>
+      ),
     },
     {
       accessorKey: "careTeam",
-      header: "Care Team",
+      header: () => <StaticHeader>Care Team</StaticHeader>,
     },
     {
       accessorKey: "sharedWith", 
-      header: "Shared With",
+      header: () => <StaticHeader>Shared With</StaticHeader>,
     },
     {
       accessorKey: "journeys",
-      header: "Journeys",
+      header: () => <StaticHeader>Journeys</StaticHeader>,
     },
     {
       accessorKey: "tags",
-      header: "Tags",
+      header: () => <StaticHeader>Tags</StaticHeader>,
     },
   ], [])
 
@@ -1252,8 +1254,8 @@ export function ContactsTable() {
   const visibleScrollableColumns = scrollableColumns.filter(column => visibleColumns[column.key])
 
   return (
-    <div className="space-y-4 w-full">
-      <div className="flex items-center justify-between">
+    <div className="w-full">
+      <div className="flex items-center justify-between py-4">
         <Input
           placeholder="Find someone"
           value={columnFilters.find(filter => filter.id === 'name')?.value as string || ""}
@@ -1289,22 +1291,17 @@ export function ContactsTable() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      
       <div className="border rounded-lg overflow-hidden flex">
         {/* Fixed first column */}
         {visibleColumns.name && (
           <div className="flex-shrink-0 border-r bg-white">
             <Table>
-              <TableHeader>
+              <TableHeader className="sticky top-0 z-20 bg-background">
                 <TableRow className="hover:bg-transparent">
-                  <TableHead className="font-medium whitespace-nowrap w-48">
-                    <div 
-                      className="flex items-center cursor-pointer select-none hover:text-accent-foreground"
-                      onClick={() => table.getColumn('name')?.toggleSorting(table.getColumn('name')?.getIsSorted() === 'asc')}
-                    >
+                  <TableHead className="whitespace-nowrap w-48">
+                    <SortableHeader onSort={() => table.getColumn('name')?.toggleSorting(table.getColumn('name')?.getIsSorted() === 'asc')}>
                       Name
-                      <ArrowUpDown className="ml-2 h-4 w-4" />
-                    </div>
+                    </SortableHeader>
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -1350,11 +1347,11 @@ export function ContactsTable() {
         {visibleScrollableColumns.length > 0 && (
           <div className="flex-1 overflow-x-auto">
             <Table>
-              <TableHeader>
+              <TableHeader className="sticky top-0 z-20 bg-background">
                 <TableRow className="hover:bg-transparent">
                   {visibleScrollableColumns.map((column) => (
-                    <TableHead key={column.key} className="font-medium whitespace-nowrap">
-                      {column.label}
+                    <TableHead key={column.key} className="whitespace-nowrap">
+                      <StaticHeader>{column.label}</StaticHeader>
                     </TableHead>
                   ))}
                 </TableRow>
@@ -1444,30 +1441,48 @@ export function ContactsTable() {
             </Table>
           </div>
         )}
-      </div>
-
+        </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="text-muted-foreground flex-1 text-sm">
           Page {table.getState().pagination.pageIndex + 1} of{" "}
           {table.getPageCount()} ({table.getFilteredRowModel().rows.length} contacts)
         </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2">
+            <span className="text-sm text-muted-foreground">Rows per page</span>
+            <Select
+              value={table.getState().pagination.pageSize.toString()}
+              onValueChange={(value) => table.setPageSize(Number(value))}
+            >
+              <SelectTrigger className="w-16 h-8">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="10">10</SelectItem>
+                <SelectItem value="20">20</SelectItem>
+                <SelectItem value="50">50</SelectItem>
+                <SelectItem value="100">100</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              Previous
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              Next
+            </Button>
+          </div>
         </div>
       </div>
 
