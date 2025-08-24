@@ -10,6 +10,10 @@ const meta: Meta<typeof Input> = {
       control: { type: "select" },
       options: ["text", "email", "password", "number"],
     },
+    size: {
+      control: { type: "select" },
+      options: ["default", "small"],
+    },
     disabled: {
       control: { type: "boolean" },
     },
@@ -21,6 +25,14 @@ type Story = StoryObj<typeof Input>;
 export const Default: Story = {
   args: {
     placeholder: "Enter text...",
+    size: "default",
+  },
+};
+
+export const Small: Story = {
+  args: {
+    placeholder: "Small input...",
+    size: "small",
   },
 };
 
