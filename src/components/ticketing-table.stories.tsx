@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { TicketingTable } from "./ticketing-table"
+import { Toaster as Sonner } from "sonner"
 
 const meta: Meta<typeof TicketingTable> = {
   title: "Organisms/TicketingTable", 
@@ -12,6 +13,19 @@ const meta: Meta<typeof TicketingTable> = {
       }
     }
   },
+  render: (args) => (
+    <div className="p-8 max-w-6xl mx-auto">
+      <TicketingTable {...args} />
+    </div>
+  ),
+  decorators: [
+    (Story) => (
+      <>
+        <Story />
+        <Sonner theme="light" />
+      </>
+    ),
+  ],
   tags: ["autodocs"],
 }
 

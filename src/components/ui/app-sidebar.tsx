@@ -46,11 +46,11 @@ export function AppSidebar({ activePage }: { activePage?: string } = {}) {
             <Sparkles className="h-4 w-4 mr-2 text-sidebar-foreground" />
             <span className="text-sm text-sidebar-foreground">Ask AI</span>
           </Button>
-          <Button variant="ghost" className="w-full justify-start h-8 px-2 py-2 rounded-md">
+          <Button variant="ghost" className={`w-full justify-start h-8 px-2 py-2 rounded-md ${activePage === 'contacts' ? 'bg-sidebar-accent text-sidebar-accent-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground' : ''}`}>
             <UsersRound className="h-4 w-4 mr-2 text-sidebar-foreground" />
             <span className="text-sm text-sidebar-foreground">Contacts</span>
           </Button>
-          <Button variant="ghost" className="w-full justify-start h-8 px-2 py-2 rounded-md">
+          <Button variant="ghost" className={`w-full justify-start h-8 px-2 py-2 rounded-md ${activePage === 'tickets' ? 'bg-sidebar-accent text-sidebar-accent-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground' : ''}`}>
             <Ticket className="h-4 w-4 mr-2 text-sidebar-foreground" />
             <span className="text-sm text-sidebar-foreground">Tickets</span>
           </Button>

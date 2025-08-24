@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ChevronDown, X, Plus, Check, PanelRight, Palette, Circle } from "lucide-react"
+import { ChevronDown, X, Plus, Check, PanelRight, Palette, Circle, ArrowUpDown, Settings2 } from "lucide-react"
 import {
   type ColumnDef,
   type ColumnFiltersState,
@@ -1001,7 +1001,7 @@ function TagList({
               <Plus className="h-2.5 w-2.5" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="p-0 w-fit">
+          <DropdownMenuContent align="start" className="p-0 w-48">
             <Command className="rounded-md border-none shadow-none">
               <CommandGroup className="p-1">
                 {availableOptions.map((option) => {
@@ -1010,50 +1010,54 @@ function TagList({
                     <CommandItem
                       key={option}
                       onSelect={(event) => event.preventDefault()}
-                      className="flex items-center gap-2 rounded-xs py-1.5 pl-2 pr-8"
+                      className="flex items-center justify-between rounded-xs py-1.5 px-2"
                     >
-                      <div
-                        className="cursor-pointer"
-                        onClick={(event) => {
-                          event.preventDefault()
-                          event.stopPropagation()
-                          if (allowColorSelection) {
-                            handleColorClick(option, event)
-                          }
-                        }}
-                      >
-                        <Circle 
-                          className="h-4 w-4"
-                          style={tagColor ? { 
-                            backgroundColor: getColorValue(tagColor.bgColor),
-                            color: getColorValue(tagColor.bgColor),
-                            border: `1px solid ${getColorValue(tagColor.bgColor)}`,
-                            borderRadius: '50%',
-                            fill: getColorValue(tagColor.bgColor),
-                            stroke: 'none'
-                          } : {
-                            backgroundColor: 'transparent',
-                            border: 'none',
-                            borderRadius: '50%',
-                            color: '#e5e7eb',
-                            fill: '#e5e7eb',
-                            stroke: 'none'
+                      <div className="flex items-center gap-2">
+                        <div
+                          className="cursor-pointer"
+                          onClick={(event) => {
+                            event.preventDefault()
+                            event.stopPropagation()
+                            if (allowColorSelection) {
+                              handleColorClick(option, event)
+                            }
                           }}
-                        />
+                        >
+                          <Circle 
+                            className="h-4 w-4"
+                            style={tagColor ? { 
+                              backgroundColor: getColorValue(tagColor.bgColor),
+                              color: getColorValue(tagColor.bgColor),
+                              border: `1px solid ${getColorValue(tagColor.bgColor)}`,
+                              borderRadius: '50%',
+                              fill: getColorValue(tagColor.bgColor),
+                              stroke: 'none'
+                            } : {
+                              backgroundColor: 'transparent',
+                              border: 'none',
+                              borderRadius: '50%',
+                              color: '#e5e7eb',
+                              fill: '#e5e7eb',
+                              stroke: 'none'
+                            }}
+                          />
+                        </div>
+                        <span 
+                          className="text-popover-foreground text-sm cursor-pointer"
+                          onClick={(event) => {
+                            event.preventDefault()
+                            event.stopPropagation()
+                            handleToggleTag(option, event)
+                          }}
+                        >
+                          {option}
+                        </span>
                       </div>
-                      <span 
-                        className="text-popover-foreground text-sm flex-1 cursor-pointer"
-                        onClick={(event) => {
-                          event.preventDefault()
-                          event.stopPropagation()
-                          handleToggleTag(option, event)
-                        }}
-                      >
-                        {option}
-                      </span>
-                      {items.includes(option) && (
-                        <Check className="ml-auto h-4 w-4 text-popover-foreground" />
-                      )}
+                      <div className="h-4 w-4 flex items-center justify-center">
+                        {items.includes(option) && (
+                          <Check className="h-4 w-4 text-popover-foreground" />
+                        )}
+                      </div>
                     </CommandItem>
                   )
                 })}
@@ -1135,7 +1139,17 @@ export function ContactsTable() {
   const columns = React.useMemo<ColumnDef<Contact>[]>(() => [
     {
       accessorKey: "name",
-      header: "Name",
+      header: ({ column }) => {
+        return (
+          <div 
+            className="flex items-center cursor-pointer select-none font-medium hover:text-accent-foreground"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Name
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </div>
+        )
+      },
     },
     {
       accessorKey: "careTeam",
@@ -1246,25 +1260,31 @@ export function ContactsTable() {
           onChange={(event) =>
             handleNameFilter(event.target.value)
           }
+          size="small"
           className="max-w-sm"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="flex items-center gap-2">
-              Columns
-              <ChevronDown className="h-4 w-4" />
+            <Button variant="outline" size="sm" className="flex items-center gap-2">
+              <Settings2 className="h-4 w-4" />
+              View
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
             {staticColumns.map((column) => (
-              <DropdownMenuCheckboxItem
+              <DropdownMenuItem
                 key={column.key}
-                checked={visibleColumns[column.key]}
-                onCheckedChange={() => toggleColumn(column.key)}
                 onSelect={(e) => e.preventDefault()}
+                onClick={() => toggleColumn(column.key)}
+                className="px-2 py-1.5 flex items-center justify-between"
               >
-                {column.label}
-              </DropdownMenuCheckboxItem>
+                <span className="text-popover-foreground text-sm">{column.label}</span>
+                <div className="h-4 w-4 flex items-center justify-center">
+                  {visibleColumns[column.key] && (
+                    <Check className="h-4 w-4 text-popover-foreground" />
+                  )}
+                </div>
+              </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -1278,7 +1298,13 @@ export function ContactsTable() {
               <TableHeader>
                 <TableRow className="hover:bg-transparent">
                   <TableHead className="font-medium whitespace-nowrap w-48">
-                    Name
+                    <div 
+                      className="flex items-center cursor-pointer select-none hover:text-accent-foreground"
+                      onClick={() => table.getColumn('name')?.toggleSorting(table.getColumn('name')?.getIsSorted() === 'asc')}
+                    >
+                      Name
+                      <ArrowUpDown className="ml-2 h-4 w-4" />
+                    </div>
                   </TableHead>
                 </TableRow>
               </TableHeader>
