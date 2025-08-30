@@ -1,3 +1,4 @@
+export * from "./charts"
 export { 
   DataTable, 
   type DataTableProps, 
