@@ -1,7 +1,3 @@
-# Claude
-
-This file is a placeholder for Claude-related documentation or notes. Add any relevant information about Claude usage, integration, or configuration here.
-
 "use client"
 
 import * as React from "react"
@@ -15,11 +11,20 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+
+type ChartConfig = {
+  [k in string]: {
+    label?: React.ReactNode
+    icon?: React.ComponentType
+  } & (
+    | { color?: string; theme?: never }
+    | { color?: never; theme: Record<string, string> }
+  )
+}
 
 export const description = "An interactive bar chart"
 
@@ -144,9 +149,9 @@ export function ChartBarInteractive() {
   )
 
   return (
-    <Card className="py-0">
-      <CardHeader className="flex flex-col items-stretch border-b !p-0 sm:flex-row">
-        <div className="flex flex-1 flex-col justify-center gap-1 px-6 pt-4 pb-3 sm:!py-0">
+    <Card className="pt-0 pb-6 gap-0">
+      <CardHeader className="flex flex-col items-stretch p-0 sm:flex-row border-b relative pb-0">
+        <div className="flex flex-1 flex-col justify-center gap-1 px-6 pb-4">
           <CardTitle>Bar Chart - Interactive</CardTitle>
           <CardDescription>
             Showing total visitors for the last 3 months
@@ -159,7 +164,7 @@ export function ChartBarInteractive() {
               <button
                 key={chart}
                 data-active={activeChart === chart}
-                className="data-[active=true]:bg-muted/50 relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l sm:border-t-0 sm:border-l sm:px-8 sm:py-6"
+                className="data-[active=true]:bg-muted/50 relative z-30 flex flex-1 flex-col justify-center gap-1 px-6 py-4 text-left even:border-l sm:border-l sm:px-8 sm:py-6"
                 onClick={() => setActiveChart(chart)}
               >
                 <span className="text-muted-foreground text-xs">
@@ -173,14 +178,16 @@ export function ChartBarInteractive() {
           })}
         </div>
       </CardHeader>
-      <CardContent className="px-2 sm:p-6">
+      <CardContent className="pt-0">
         <ChartContainer
           config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
+          className="w-full h-[376px]"
         >
           <BarChart
             accessibilityLayer
             data={chartData}
+            width={800}
+            height={350}
             margin={{
               left: 12,
               right: 12,
@@ -216,12 +223,13 @@ export function ChartBarInteractive() {
                 />
               }
             />
-            <Bar dataKey={activeChart} fill={`var(--color-${activeChart})`} />
+            <Bar 
+              dataKey={activeChart} 
+              fill={activeChart === 'desktop' ? '#3b82f6' : '#10b981'} 
+            />
           </BarChart>
         </ChartContainer>
       </CardContent>
     </Card>
   )
 }
-
-
