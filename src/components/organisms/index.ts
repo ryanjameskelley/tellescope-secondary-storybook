@@ -1,4 +1,5 @@
 export * from "./charts"
+export * from "./contacts-dialog"
 export { 
   DataTable, 
   type DataTableProps, 
