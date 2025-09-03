@@ -1,8 +1,3 @@
-# Claude
-This file is a placeholder for Claude-related documentation or notes. Add any relevant information about Claude usage, integration, or configuration here.
-"use client"
-
-code:
 "use client"
 
 import * as React from "react"
@@ -37,33 +32,66 @@ function isValidDate(date: Date | undefined) {
   return !isNaN(date.getTime())
 }
 
-export function Calendar28() {
+export interface DatePickerProps {
+  label?: string
+  placeholder?: string
+  value?: Date
+  onChange?: (date: Date | undefined) => void
+  disabled?: boolean
+  className?: string
+  id?: string
+}
+
+export function DatePicker({
+  label = "Date",
+  placeholder,
+  value,
+  onChange,
+  disabled = false,
+  className = "",
+  id = "date-picker"
+}: DatePickerProps) {
   const [open, setOpen] = React.useState(false)
-  const [date, setDate] = React.useState<Date | undefined>(
-    new Date("2025-06-01")
-  )
+  const [date, setDate] = React.useState<Date | undefined>(value)
   const [month, setMonth] = React.useState<Date | undefined>(date)
-  const [value, setValue] = React.useState(formatDate(date))
+  const [inputValue, setInputValue] = React.useState(formatDate(date))
+
+  React.useEffect(() => {
+    setDate(value)
+    setMonth(value)
+    setInputValue(formatDate(value))
+  }, [value])
+
+  const handleDateSelect = (selectedDate: Date | undefined) => {
+    setDate(selectedDate)
+    setInputValue(formatDate(selectedDate))
+    setOpen(false)
+    onChange?.(selectedDate)
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputDate = new Date(e.target.value)
+    setInputValue(e.target.value)
+    if (isValidDate(inputDate)) {
+      setDate(inputDate)
+      setMonth(inputDate)
+      onChange?.(inputDate)
+    }
+  }
 
   return (
-    <div className="flex flex-col gap-3">
-      <Label htmlFor="date" className="px-1">
-        Subscription Date
+    <div className={`flex flex-col gap-3 ${className}`}>
+      <Label htmlFor={id} className="px-1">
+        {label}
       </Label>
       <div className="relative flex gap-2">
         <Input
-          id="date"
-          value={value}
-          placeholder="June 01, 2025"
+          id={id}
+          value={inputValue}
+          placeholder={placeholder || formatDate(new Date())}
           className="bg-background pr-10"
-          onChange={(e) => {
-            const date = new Date(e.target.value)
-            setValue(e.target.value)
-            if (isValidDate(date)) {
-              setDate(date)
-              setMonth(date)
-            }
-          }}
+          disabled={disabled}
+          onChange={handleInputChange}
           onKeyDown={(e) => {
             if (e.key === "ArrowDown") {
               e.preventDefault()
@@ -74,9 +102,9 @@ export function Calendar28() {
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <Button
-              id="date-picker"
               variant="ghost"
               className="absolute top-1/2 right-2 size-6 -translate-y-1/2"
+              disabled={disabled}
             >
               <CalendarIcon className="size-3.5" />
               <span className="sr-only">Select date</span>
@@ -94,11 +122,7 @@ export function Calendar28() {
               captionLayout="dropdown"
               month={month}
               onMonthChange={setMonth}
-              onSelect={(date) => {
-                setDate(date)
-                setValue(formatDate(date))
-                setOpen(false)
-              }}
+              onSelect={handleDateSelect}
             />
           </PopoverContent>
         </Popover>
@@ -106,4 +130,3 @@ export function Calendar28() {
     </div>
   )
 }
-
