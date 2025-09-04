@@ -1,109 +1,55 @@
 # Claude
 This file is a placeholder for Claude-related documentation or notes. Add any relevant information about Claude usage, integration, or configuration here.
-"use client"
 
 code:
 "use client"
 
-import * as React from "react"
-import { CalendarIcon } from "lucide-react"
+import { Avatar, AvatarImage } from "@/components/ui/avatar"
+import { Card, CardHeader, CardFooter } from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
 
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-
-function formatDate(date: Date | undefined) {
-  if (!date) {
-    return ""
-  }
-
-  return date.toLocaleDateString("en-US", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  })
-}
-
-function isValidDate(date: Date | undefined) {
-  if (!date) {
-    return false
-  }
-  return !isNaN(date.getTime())
-}
-
-export function Calendar28() {
-  const [open, setOpen] = React.useState(false)
-  const [date, setDate] = React.useState<Date | undefined>(
-    new Date("2025-06-01")
-  )
-  const [month, setMonth] = React.useState<Date | undefined>(date)
-  const [value, setValue] = React.useState(formatDate(date))
-
+export default function MessageCard() {
   return (
-    <div className="flex flex-col gap-3">
-      <Label htmlFor="date" className="px-1">
-        Subscription Date
-      </Label>
-      <div className="relative flex gap-2">
-        <Input
-          id="date"
-          value={value}
-          placeholder="June 01, 2025"
-          className="bg-background pr-10"
-          onChange={(e) => {
-            const date = new Date(e.target.value)
-            setValue(e.target.value)
-            if (isValidDate(date)) {
-              setDate(date)
-              setMonth(date)
-            }
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "ArrowDown") {
-              e.preventDefault()
-              setOpen(true)
-            }
-          }}
-        />
-        <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              id="date-picker"
-              variant="ghost"
-              className="absolute top-1/2 right-2 size-6 -translate-y-1/2"
-            >
-              <CalendarIcon className="size-3.5" />
-              <span className="sr-only">Select date</span>
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent
-            className="w-auto overflow-hidden p-0"
-            align="end"
-            alignOffset={-8}
-            sideOffset={10}
-          >
-            <Calendar
-              mode="single"
-              selected={date}
-              captionLayout="dropdown"
-              month={month}
-              onMonthChange={setMonth}
-              onSelect={(date) => {
-                setDate(date)
-                setValue(formatDate(date))
-                setOpen(false)
-              }}
-            />
-          </PopoverContent>
-        </Popover>
-      </div>
-    </div>
+    <Card className="rounded-xl border">
+      <CardHeader className="p-6 space-y-2">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <div className="bg-foreground rounded-full w-2 h-2"></div>
+            <h3 className="text-card-foreground text-lg font-semibold leading-7">Message subject</h3>
+          </div>
+          <div className="flex -space-x-2">
+            <Avatar className="w-5 h-5 border border-card bg-background rounded-full">
+              <AvatarImage src="https://github.com/shadcn.png" alt="User" />
+            </Avatar>
+            <Avatar className="w-5 h-5 border border-card bg-background rounded-full">
+              <AvatarImage src="https://github.com/shadcn.png" alt="User" />
+            </Avatar>
+            <Avatar className="w-5 h-5 border border-card bg-background rounded-full">
+              <AvatarImage src="https://github.com/shadcn.png" alt="User" />
+            </Avatar>
+            <Avatar className="w-5 h-5 border border-card bg-background rounded-full">
+              <AvatarImage src="https://github.com/shadcn.png" alt="User" />
+            </Avatar>
+            <Avatar className="w-5 h-5 border border-card bg-background rounded-full">
+              <AvatarImage src="https://github.com/shadcn.png" alt="User" />
+            </Avatar>
+          </div>
+        </div>
+        <p className="text-muted-foreground text-sm leading-5">
+          This is a truncated card description to display the message in a way that is glanceable
+        </p>
+      </CardHeader>
+      <CardFooter className="p-6 border-t flex items-center gap-3">
+        <div className="flex items-center gap-1">
+          <span className="text-foreground text-sm leading-5">Today</span>
+        </div>
+        <Separator orientation="vertical" className="h-5" />
+        <span className="text-muted-foreground text-sm leading-5">10:00 PM</span>
+      </CardFooter>
+    </Card>
   )
 }
 
+
+cli:
+npx shadcn add https://rdhlrr8yducbb6dq.public.blob.vercel-storage.com/figma-to-shadcn/MessageCard-pT7mnBqbB7B6vdgpHLSqV0sEEeFAEl.json
