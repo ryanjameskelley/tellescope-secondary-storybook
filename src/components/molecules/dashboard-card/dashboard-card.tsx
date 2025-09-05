@@ -41,7 +41,7 @@ export function DashboardCard({
   className = "",
 }: DashboardCardProps) {
   return (
-    <Card className={`rounded-xl border shadow-sm w-[450px] hover:shadow-md transition-shadow cursor-pointer ${className}`}>
+    <Card className={`rounded-xl border shadow-sm hover:shadow-md transition-shadow cursor-pointer ${className}`}>
       <CardHeader className="px-6 pt-0 pb-0 space-y-4">
         <div className="flex flex-col space-y-2">
 {statusLabel ? (
