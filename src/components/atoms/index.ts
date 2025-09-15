@@ -1,1 +1,6 @@
 export * from "./table"
+export * from "./loading-screen"
+export * from "./avatar"
+export * from "./label"
+export * from "./skeleton"
+export * from "./tooltip"
